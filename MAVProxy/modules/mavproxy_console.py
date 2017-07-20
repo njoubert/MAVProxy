@@ -31,6 +31,7 @@ class ConsoleModule(mp_module.MPModule):
         mpstate.console.set_status('ARM', 'ARM', fg='grey', row=0)
         mpstate.console.set_status('GPS', 'GPS: --', fg='red', row=0)
         mpstate.console.set_status('Vcc', 'Vcc: --', fg='red', row=0)
+        mpstate.console.set_status('Vbatt', 'Vbatt: --', fg='grey', row=0)
         mpstate.console.set_status('Radio', 'Radio: --', row=0)
         mpstate.console.set_status('INS', 'INS', fg='grey', row=0)
         mpstate.console.set_status('MAG', 'MAG', fg='grey', row=0)
@@ -216,6 +217,7 @@ class ConsoleModule(mp_module.MPModule):
             self.console.set_status('Roll', 'Roll %u' % math.degrees(msg.roll))
             self.console.set_status('Pitch', 'Pitch %u' % math.degrees(msg.pitch))
         elif type in ['SYS_STATUS']:
+            self.console.set_status('Vbatt', 'Vbatt: %.2f' % (msg.voltage_battery * 0.001))
             sensors = { 'AS'   : mavutil.mavlink.MAV_SYS_STATUS_SENSOR_DIFFERENTIAL_PRESSURE,
                         'MAG'  : mavutil.mavlink.MAV_SYS_STATUS_SENSOR_3D_MAG,
                         'INS'  : mavutil.mavlink.MAV_SYS_STATUS_SENSOR_3D_ACCEL | mavutil.mavlink.MAV_SYS_STATUS_SENSOR_3D_GYRO,
