@@ -141,13 +141,9 @@ class OnChangeSpeechAnnounce(PeriodicSpeechAnnounce):
         new_value = self.msg_entry_to_text(msg)
         if self.prev_value == float("inf"):
             self.prev_value = new_value
-        if abs(self.prev_value - new_value) >= self.threshold:
+        if (self.threshold == 0 and self.prev_value != new_value) or (self.threshold > 0 and abs(self.prev_value - new_value) >= self.threshold):
+            self.prev_value = new_value
             super(OnChangeSpeechAnnounce, self).maybe_say(msg, backend)
-
-    def to_speech_text(self, value):
-        ret = "%s changing from %s to %s" % (self.get_speech_name(), self.convert(self.prev_value), self.convert(value))
-        self.prev_value = value
-        return ret
 
     def __str__(self):
         s = super(OnChangeSpeechAnnounce, self).__str__()
